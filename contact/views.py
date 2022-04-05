@@ -38,4 +38,5 @@ class ContactDetail(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, Gen
         return self.update(request, *args, **kwargs)
     
     def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+        if self.destroy(request, *args, **kwargs):
+            return Response(data="Deleted",status=status.HTTP_204_NO_CONTENT)
