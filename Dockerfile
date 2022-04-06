@@ -19,8 +19,8 @@ RUN python /royalgate/manage.py migrate
 
 RUN python manage.py collectstatic --no-input
 
-RUN mkdir -pv /var/{log,run}/gunicorn/
-RUN chown -cR $USER:$USER /var/{log,run}/gunicorn/
+# RUN mkdir -pv /var/{log,run}/gunicorn/
+# RUN chown -cR $USER:$USER /var/{log,run}/gunicorn/
 
 # CMD [ "gunicorn","--bind",":8000","core.wsgi:application" ]
 
