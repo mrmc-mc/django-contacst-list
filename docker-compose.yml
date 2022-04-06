@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  royalgate_django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - royalgate_django_static:/app/static
+      - royalgate_django_media:/app/media
+      - royalgate_django_assets:/app/assets
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - app_network
+      - nginx_network
