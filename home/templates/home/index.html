@@ -1,68 +1,279 @@
 {% include 'home/base.html' %}
 {% load static %}
 
+{% block content %}
 <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body p-t-0">
-                    <div class="input-group">
-                        <input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Search">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-effect-ripple btn-primary"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body p-t-0">
+                <div class="input-group">
+                    <input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control"
+                        placeholder="Search">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-effect-ripple btn-primary"><i
+                                class="fa fa-search"></i></button>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+</div>
+<div id="contacts" class="row">
 
-        <div class="col-sm-6">
-            <div class="panel">
-                <div class="panel-body p-t-10">
-                    <div class="media-main">
-                        <a class="pull-left" href="#">
-                            <img class="thumb-lg img-circle bx-s" src="{% static 'img/user_1.jpg' %}" alt="">
-                        </a>
-                        <div class="pull-right btn-group-sm">
-                            <a href="#" class="btn btn-success tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="#" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete">
-                                <i class="fa fa-close"></i>
-                            </a>
-                        </div>
-                        <div class="info">
-                            <h4>Jonathan Smith</h4>
-                            <p class="text-muted">Graphics Designer</p>
-                        </div>
+</div>
+
+
+  <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add New Contact
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <form role="form" id="myform" autocomplete="off">
+                    <div class="form-group">
+                        <label for="exampleInputFname">First Name</label>
+                        <input type="text" id="fname" name="fname" class="form-control" id="exampleInputFname" placeholder="Mostafa" required/>
                     </div>
-                    <div class="clearfix"></div>
-                    <hr>
-                    <ul class="social-links list-inline p-b-10">
-                        <li>
-                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" 
-                            href="#" data-original-title="Facebook"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" 
-                            href="#" data-original-title="Twitter"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" 
-                            href="#" data-original-title="LinkedIn"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" 
-                            href="#" data-original-title="Skype"><i class="fa fa-skype"></i></a>
-                        </li>
-                        <li>
-                            <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" 
-                            href="#" data-original-title="Message"><i class="fa fa-envelope-o"></i></a>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="form-group">
+                        <label for="exampleInputLname">Last Name</label>
+                        <input type="text" id="lname" name="lname" class="form-control" id="exampleInputLname" placeholder="Shahbazi" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPhone">Mobile Number</label>
+                        <input type="number" id="phone" name="phone" class="form-control" id="exampleInputPhone" placeholder="09212345678" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputHome">Home Number</label>
+                        <input type="number" id="home" name="home" class="form-control" id="exampleInputHome" placeholder="0212400000" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" id="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="...@gmail.com" />
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <p>Add Contact</p>
             </div>
         </div>
-
     </div>
+</div>
+{% endblock content %}
+
+
+{% block extrajs %}
+
+<script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      };
+
+    function indexlist(){
+         $.get("{% url 'api:list' %}").done(function (data) {
+
+
+            let output = '';
+            let home = '';
+            for (let i in data) {
+                if (data[i].home == null) {
+                    home = 'Empty';
+                } else {
+                    home = data[i].home;
+                }
+                output += `<div class="col-sm-6">
+                    <div class="panel">
+                        <div class="panel-body p-t-10">
+                            <div class="media-main">
+                                <a class="pull-left" href="#">
+                                    <img class="thumb-lg img-circle bx-s" src="{% static 'img/user_1.jpg' %}" alt="">
+                                </a>
+                                <div class="pull-right btn-group-sm">
+                                    <button id="edit" value="${data[i].id}" onClick="editc(this);" class="btn btn-success tooltips" data-placement="top" data-toggle="tooltip"
+                                        data-original-title="Edit">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <button id="delete" value="${data[i].id}" onClick="deletec(this);" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip"
+                                        data-original-title="Delete">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </div>
+                                <div class="info">
+                                    <h4>${data[i].fname} ${data[i].lname}</h4>
+                                    <p class="text-muted">Phone: ${data[i].phone}</p><p class="text-muted"> Home: ${home}</p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                            <ul class="social-links list-inline p-b-10">
+                                <li>
+                                    <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="mailto:${data[i].email}"
+                                        data-original-title="Message"><i class="fa fa-envelope-o"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>`;
+
+            }
+            $('#contacts').html(output);
+        });};
+
+    indexlist();
+
+
+    function deletec(e){
+        $.ajax({
+            url: "/api/v1/person/"+ $(e).val(),
+            type: 'DELETE',
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            //data: {movie:movie}, //<-----this should be an object.
+            contentType:'application/json',  // <---add this              // <---update this
+            success: function(result) {
+                Toastify({
+                    text: "Contact Successfully Deleted!",
+                    duration: 5000,
+                    className: "success",
+                    position: "center",
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                  }).showToast();
+                indexlist();
+            },
+            error: function(result){
+                Toastify({
+                    text: "Error Occurred! Contact US",
+                    duration: 5000,
+                    className: "warning",
+                    position: "center",
+                    style: {
+                      background: "linear-gradient(to right, #ff8502, #376e9d)",
+                    },
+                  }).showToast();
+                indexlist();
+            }
+        });
+    };
+
+
+
+    function editc(e){
+
+        let form = $(this);
+        {% comment %} console.log(form.action()); {% endcomment %}
+        $.ajax({
+            url: "/api/v1/person/"+ $(e).val(),
+            type: 'GET',
+            success: function(result) {
+                    $('#myform').attr('action', "/api/v1/person/"+ $(e).val());
+                    $('#myform').attr('method', "PUT");
+                    $("#fname").val(result.fname);
+                    $("#lname").val(result.lname);
+                    $("#phone").val(result.phone);
+                    $("#home").val(result.home);
+                    $("#email").val(result.email);
+                
+                $("#myModal").modal()
+            },
+            error: function(result){
+                Toastify({
+                    text: "Error Occurred! Contact US",
+                    duration: 5000,
+                    className: "warning",
+                    position: "center",
+                    style: {
+                      background: "linear-gradient(to right, #ff8502, #376e9d)",
+                    },
+                  }).showToast();
+                indexlist();
+            }
+        });
+    };
+
+
+
+
+    function getFormData($form){
+        let unindexed_array = $form.serializeArray();
+        let indexed_array = {};
+    
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+    
+        return indexed_array;
+    }
+
+
+
+    $("#myform").submit(function(e) {
+        e.preventDefault();
+        let form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: JSON.stringify(getFormData(form)),
+            cache: false,
+            dataType: "json",
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            success: function (data) {
+                Toastify({
+                    text: "Contact Successfully Created!",
+                    duration: 5000,
+                    className: "success",
+                    position: "center",
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                  }).showToast();
+                indexlist();
+            },
+            error: function(data){
+                Toastify({
+                    text: "Failed to Add new Contact",
+                    duration: 5000,
+                    className: "warning",
+                    position: "center",
+                    style: {
+                      background: "linear-gradient(to right, #ff8502, #376e9d)",
+                    },
+                  }).showToast();
+                indexlist();
+            }
+        });
+    });
+
+    $('#addnew').click(function(){
+        $('#myform input').val("");
+        $('#myform').attr('action', "{% url 'api:list' %}");
+        $('#myform').attr('method', "POST");
+     });
+     
+</script>
+
+{% endblock extrajs %}
