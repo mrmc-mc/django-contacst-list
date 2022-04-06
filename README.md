@@ -10,4 +10,4 @@
 
 ## API Documents
 
-POSTMAN API Document guide : [Markdown Live Preview](https://documenter.getpostman.com/view/14477012/UVyvuZWw).
+POSTMAN API Document guide : [API Endpoints](https://documenter.getpostman.com/view/14477012/UVyvuZWw).
