@@ -1,4 +1,4 @@
 * linguist-vendored
 *.py linguist-vendored=false
-*.py linguist-language=Django
+*.* linguist-language=Python
 
